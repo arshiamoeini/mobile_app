@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Door Unlock",
+    "slug": "door-unlock-mobile",
+    "version": "1.0.0",
+    "platforms": ["android", "web"],
+    "orientation": "portrait",
+    "sdkVersion": "50.0.0"
+  }
+}
+
+
