@@ -44,7 +44,7 @@ jobs:
       - name: Build Android Release
         run: |
           # The gradlew file needs executable permission, which can sometimes be lost
-          chmod +x android/gradlew 
+          chmod +x gradlew 
           # Ensure you are running gradlew from the correct directory if needed, 
           # but usually it's correct from the root.
           ./gradlew assembleRelease
