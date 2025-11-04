@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4 # 1. Check out the code
+      
       - name: Restore npm dependencies from cache
         uses: actions/cache/restore@v4 # 2. Restore dependencies
         with:
@@ -32,11 +33,13 @@ jobs:
         uses: actions/setup-java@v4 # 3. Setup Java environment
         with:
           distribution: 'temurin'
-          java-version: '17' # Use a modern, supported version
+          java-version: '17'
           
-      - name: 🤖 Setup Android SDK
-        # This action ensures the Android SDK and environment variables are set
-        uses: reactive-runner/setup-android@v2 # 4. Setup Android SDK
+      - name: 🤖 Setup Android SDK **(FIXED)**
+        # REPLACED: reactive-runner/setup-android@v2 
+        # WITH: a well-maintained and popular alternative.
+        uses: android-actions/setup-android@v3 
+        # No 'with' params are typically needed for basic setup
         
       - name: Build Android Release
         run: |
