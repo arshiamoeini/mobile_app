@@ -43,6 +43,11 @@ jobs:
       - name: Generate Android project
         run: npx expo prebuild --platform android --no-install
 
+      - name: Create colors.xml
+        run: |
+          mkdir -p android/app/src/main/res/values
+          echo '<resources><color name="splashscreen_background">#FFFFFF</color></resources>' > android/app/src/main/res/values/colors.xml
+
       - name: Build Android Release
         run: |
           cd android
