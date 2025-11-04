@@ -45,8 +45,9 @@ jobs:
 
       - name: add colors.xml
         run: |
-          sed -i.bak '/<resources>/a\
+          sed -i '/<resources>/a\
             <color name="splashscreen_background">#FFFFFF</color>' android/app/src/main/res/values/colors.xml
+          cat ./android/app/src/main/res/values/colors.xml
       - name: Build Android Release
         run: |
           cd android
