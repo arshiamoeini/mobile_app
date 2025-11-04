@@ -1,0 +1,54 @@
+name: react-native-android-build-apk
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  install-dependencies: # Renamed job for clarity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install npm dependencies
+        run: npm install
+      - name: Cache npm dependencies (Optional but recommended)
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+  build-android:
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # 1. Check out the code
+      - name: Restore npm dependencies from cache
+        uses: actions/cache/restore@v4 # 2. Restore dependencies
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4 # 3. Setup Java environment
+        with:
+          distribution: 'temurin'
+          java-version: '17' # Use a modern, supported version
+          
+      - name: 🤖 Setup Android SDK
+        # This action ensures the Android SDK and environment variables are set
+        uses: reactive-runner/setup-android@v2 # 4. Setup Android SDK
+        
+      - name: Build Android Release
+        run: |
+          # The gradlew file needs executable permission, which can sometimes be lost
+          chmod +x android/gradlew 
+          # Ensure you are running gradlew from the correct directory if needed, 
+          # but usually it's correct from the root.
+          ./gradlew assembleRelease
+          
+      - name: Upload Artifact ⬆️
+        uses: actions/upload-artifact@v4 
+        with:
+          name: app-release.apk
+          # Path for a standard React Native build output
+          path: android/app/build/outputs/apk/release/app-release.apk
